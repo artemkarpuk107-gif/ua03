@@ -7,8 +7,8 @@ const { getAdminStats, updateAdminPromotionInSheets } = require('../services/she
 // --- НАЛАШТУВАННЯ ЦІН ТА РОЛЕЙ ---
 const PROMO_COSTS = {
     1: { standard: 950, express: 1000 },
-    2: { standard: 2000, express: 2500 },
-    3: { standard: 3600, express: 4000 }
+    2: { standard: 2300, express: 2800 },
+    3: { standard: 3900, express: 4300 }
 };
 
 const PROMOTION_MAP = {
