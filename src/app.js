@@ -55,6 +55,30 @@ const stage = getStage();
 bot.use(stage.middleware());
 setupBotActions(bot);
 
+// Глобальний скид для проблемних адмінів
+bot.use(async (ctx, next) => {
+    if (ctx.message && ctx.message.text === '/start') {
+        // Якщо юзер застряг у будь-якій сцені — примусово вибиваємо його
+        if (ctx.scene) {
+            await ctx.scene.leave();
+        }
+    }
+    return next();
+});
+
+bot.start(async (ctx) => {
+    const admin = await prisma.admin.findUnique({ where: { tgId: BigInt(ctx.from.id) } });
+    
+    // Якщо його немає в базі - НЕ МОВЧИМО, а кажемо це йому в лоб
+    if (!admin) {
+        return ctx.reply('❌ Тебе немає в базі бота.');
+    }
+
+    // Твій код меню...
+    await ctx.reply(`Привіт, ${admin.nickname}! Меню відкрито.`);
+});
+
+
 // Тепер кабінет відкривається і на /start, і на /menu
 bot.command(['start', 'menu'], async (ctx) => {
     // --- ЗАХИСТ ВІД ВИКОРИСТАННЯ В ГРУПАХ ---
